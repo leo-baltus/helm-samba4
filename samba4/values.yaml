@@ -13,7 +13,7 @@ image:
   lacksK8sScript: false
   #repository: stanback/alpine-samba
   #lacksK8sScript: true
-  tag: stable
+  tag: 0.1.11
   pullPolicy: IfNotPresent
 
 nameOverride: ""
