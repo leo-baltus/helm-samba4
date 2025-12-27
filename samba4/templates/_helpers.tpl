@@ -30,9 +30,3 @@ Create chart name and version as used by the chart label.
 {{- define "samba4.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
-
-{{- define "userstocreate" -}}
-{{- range .Values.samba.users }}
-{{ .username }}:{{ .password }}
-{{ end -}}
-{{- end -}}

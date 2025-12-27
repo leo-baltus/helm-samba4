@@ -1,70 +1,62 @@
-# Default values for samba4.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-replicaCount: 1
-
-image:
-  # note: lots more pulls of stanback/alpine-samba so understandable 
-  # if you want to use that.  Just remember it doesn't contain the script
-  # so set the flag to true also.  That said, it only has one tag, and isn't
-  # an automated build so you might be better with the below image.
-  repository: imartyn/samba4k8s
-  lacksK8sScript: false
-  #repository: stanback/alpine-samba
-  #lacksK8sScript: true
-  tag: stable
-  pullPolicy: IfNotPresent
-
+## nameOverride String to partially override common.names.fullname
+##
 nameOverride: ""
+
+## fullnameOverride String to fully override common.names.fullname
+##
 fullnameOverride: ""
 
-samba:
-  global:
-    workgroup: WORKGROUP
-  share: {}
-  users: []
+## pod parameters All things pod related
+pod:
 
-persistence:
-  enabled: false
-  type: pvc
-  pvc:
-    accessMode: readWriteOnce
-    size: 8Gi
-    storageClass: "-"
-  other:
-    emptyDir: {}
+  # pod.replicaCount keep this to 1
+  replicaCount: 1
+  # pod.securityContext if using
+  securityContext: {}
+  livenessProbe:
+    ## pod.livenessProbe.enabled enabled or not
+    enabled: true
+  ## pod.image.repository path to container image
+  ## pod.image.tag tag of container image
+  ## pod.image.pullPolicy pullPolicy
+  image:
+    repository: ghcr.io/dockur/samba
+    tag: 4.22.6
+    pullPolicy: IfNotPresent
+  ## pod.persistence.enabled whether to mount persistent storage
+  ## pod.persistence.type one of other or pvcs
+  ## pod.persistence.pvcs if type pvcs fill with sets of name, mountPath, size, storageClassName
+  persistence:
+    enabled: false
+    type: other
+    pvcs:
+    - name: data
+      mountPath: /data
+      size: 8Gi
+      storageClassName: "data"
+  ## pod.useExistingSmbConfigmap if using or not
+  useExistingSmbConfigmap: false
+  ## pod.ExistingSmbConfigmap  name of configmap to mount. The filename should be smb.conf.
+  ExistingSmbConfigmap: "smbconf" 
+  ## pod.useExistingUsersSecret set to true if using
+  useExistingUsersSecret: false
+  ## pod.ExistingUsersSecret name of secret to mount. The filename should be users.conf. See https://github.com/dockur/samba
+  ExistingUsersSecret: "users"
+  ## pod.resources standard k8s stuff
+  resources: {}
+  ## pod.nodeSelector standard k8s stuff
+  nodeSelector: {}
+  ## pod.tolerations standard k8s stuff
+  tolerations: []
+  ## pod.affinity standard k8s stuff
+  affinity: {}
 
-privatePersistence:
-  enabled: false
-  pvc:
-    accessMode: readWriteOnce
-    size: 20Mi
-    storageClass: "-"
-  other:
-    emptyDir: {}
-
-livenessProbe:
-  enabled: true
-
+## @section service parameters
 service:
+  ## service.type type of service
   type: ClusterIP
+  ## service.port port of service
   port: 445
+  ## service.annotations annotations if using
+  annotations: {}
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}

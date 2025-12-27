@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
     - name: smbclient
-      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      image: "{{ .Values.pod.image.repository }}:{{ .Values.pod.image.tag }}"
       command: ['smbclient']
       args:  ['-L','{{ include "samba4.fullname" . }}']
   restartPolicy: Never
