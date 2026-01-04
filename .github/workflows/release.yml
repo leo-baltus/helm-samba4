@@ -72,7 +72,7 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          charts_dir: samba4
+          charts_dir: ,
       - name: Publish release
         uses: goreleaser/goreleaser-action@v6
         with:
