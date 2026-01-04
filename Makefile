@@ -1,6 +1,7 @@
 # Makefile for releasing
 # usage:
 # TAG=x.y.z make version-set
+# <<check in>>
 # make release
 
 TAG?=latest
