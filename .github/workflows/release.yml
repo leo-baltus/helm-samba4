@@ -17,7 +17,6 @@ jobs:
       packages: write # needed for ghcr access
     steps:
       - uses: actions/checkout@v6
-      - uses: fluxcd/flux2/action@v2.7.5
       - name: Setup Helm
         uses: azure/setup-helm@v4
         with:
@@ -69,24 +68,10 @@ jobs:
           helm package samba4/
           helm push samba4-${{ steps.prep.outputs.VERSION }}.tgz oci://ghcr.io/leo-baltus/charts
           rm samba4-${{ steps.prep.outputs.VERSION }}.tgz
-      - name: Publish Flux OCI artifact to GHCR
-        run: |
-          flux push artifact oci://ghcr.io/leo-baltus/manifests/samba4:${{ steps.prep.outputs.VERSION }} \
-            --path="./kustomize" \
-            --source="${{ github.event.repository.html_url }}" \
-            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
-          flux tag artifact oci://ghcr.io/leo-baltus/manifests/samba4:${{ steps.prep.outputs.VERSION }} --tag latest
       - name: Publish helm chart
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish config artifact
-        run: |
-          flux push artifact oci://ghcr.io/leo-baltus/samba4-deploy:${{ steps.prep.outputs.VERSION }} \
-            --path="./kustomize" \
-            --source="${{ github.event.repository.html_url }}" \
-            --revision="${GITHUB_REF_NAME}/${GITHUB_SHA}"
-          flux tag artifact oci://ghcr.io/leo-baltus/samba4-deploy:${{ steps.prep.outputs.VERSION }} --tag latest
       - name: Publish release
         uses: goreleaser/goreleaser-action@v6
         with:
