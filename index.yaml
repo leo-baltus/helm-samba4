@@ -3,9 +3,9 @@ entries:
   samba4:
   - apiVersion: v1
     appVersion: 4.22.6
-    created: "2026-01-18T17:24:44.519578395Z"
+    created: "2026-01-20T09:51:40.019170635Z"
     description: A Samba Helm chart for Kubernetes
-    digest: bf28d229d0a98091cb088b844487a3af2996db2de5806bfbd8c9d43f8b5157d9
+    digest: ba80a3e6d34438308097660600a8f6a500a215d1dd2e2699252c8d8d3ae9a0e2
     name: samba4
     urls:
     - https://leo-baltus.github.io/helm-samba4/samba4-4.22.6.tgz
@@ -37,4 +37,4 @@ entries:
     urls:
     - https://github.com/leo-baltus/helm-samba4/releases/download/samba4-0.1.6/samba4-0.1.6.tgz
     version: 0.1.6
-generated: "2026-01-18T17:24:44.519130267Z"
+generated: "2026-01-20T09:51:40.01875352Z"
