@@ -23,25 +23,26 @@ pod:
     repository: ghcr.io/dockur/samba
     tag: 4.22.6
     pullPolicy: IfNotPresent
-  ## pod.persistence.enabled whether to mount persistent storage
-  ## pod.persistence.type one of other or pvcs
-  ## pod.persistence.pvcs if type pvcs fill with sets of name, mountPath, size, storageClassName
-  persistence:
-    enabled: false
-    type: other
-    pvcs:
-    - name: data
-      mountPath: /data
-      size: 8Gi
-      storageClassName: "data"
-  ## pod.useExistingSmbConfigmap if using or not
-  useExistingSmbConfigmap: false
-  ## pod.ExistingSmbConfigmap  name of configmap to mount. The filename should be smb.conf.
-  ExistingSmbConfigmap: "smbconf" 
-  ## pod.useExistingUsersSecret set to true if using
-  useExistingUsersSecret: false
-  ## pod.ExistingUsersSecret name of secret to mount. The filename should be users.conf. See https://github.com/dockur/samba
-  ExistingUsersSecret: "users"
+  volumeMounts:
+  - mountPath: /storage
+    name: storage
+  #- mountPath: /data
+  #  name: data
+  volumes:
+  - name: storage
+    emptyDir: {}
+  #- name: data
+  #  persistentVolumeClaim:
+  #    claimName: data
+  volumeClaimTemplates:
+  #- metadata:
+  #    name: mp3
+  #  spec:
+  #    accessModes: ["ReadWriteOnce"]
+  #    resources:
+  #      requests:
+  #        storage: 120Gi
+  #    storageClassName: "zfs"
   ## pod.resources standard k8s stuff
   resources: {}
   ## pod.nodeSelector standard k8s stuff
@@ -59,4 +60,3 @@ service:
   port: 445
   ## service.annotations annotations if using
   annotations: {}
-
