@@ -23,6 +23,9 @@ pod:
     repository: ghcr.io/dockur/samba
     tag: 4.22.6
     pullPolicy: IfNotPresent
+  env:
+    - name: DEBUG_LEVEL
+      value: "1"
   volumeMounts:
   - mountPath: /storage
     name: storage

@@ -29,6 +29,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.pod.image.repository }}:{{ .Values.pod.image.tag }}"
           imagePullPolicy: {{ .Values.pod.image.pullPolicy }}
+          {{- with .Values.pod.env }}
+          env:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: cifs
               containerPort: 445
