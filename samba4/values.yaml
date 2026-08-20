@@ -21,7 +21,7 @@ pod:
   ## pod.image.pullPolicy pullPolicy
   image:
     repository: ghcr.io/dockur/samba
-    tag: 4.22.6
+    tag: 4.23.10
     pullPolicy: IfNotPresent
   env:
     - name: DEBUG_LEVEL
